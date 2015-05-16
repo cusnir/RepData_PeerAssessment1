@@ -141,9 +141,18 @@ max.steps.value &lt;- activity.by.interval[max.steps.index, &quot;steps.per.inte
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
 <p>Calculate the total number of missing values in the dataset</p>
-<pre class="r"><code>na &lt;- sum(is.na(activity))</code></pre>
-<p>The number of steps can be either 0 or 1 or any other integer value,<br />so we need to be able to replace NAs with integers and not mean values.<br />So for example if the mean is 0.33 that would mean we need to replace all NAs<br />with 0 which is not very correct and changes the result.<br />So i will be using a flip coin model with probability vector set to return either the floor(mean) or ceiling(mean) with corresponding probabilities</p>
-<p>I will use next strategy for filling NAs values for steps:<br />* calculate the mean for a specific interval * calculate the sum of all NAs for a specific interval * build a binomial distribution and get a vector with length equal to missing NAs number for that interval * replace NAs with vector obtained from the binomial disrtibution</p>
+<pre class="r"><code>na &lt;-sum(is.na(activity))
+print(na)</code></pre>
+<pre><code>## [1] 2304</code></pre>
+<p>So there are <em>2304</em> missing values.</p>
+<p>To make an approach how to replace these NAs with some values we need to consider next thing.<br />The number of steps can be either 0 or 1 or any other integer value,<br />so we need to be able to replace NAs with integers and not mean values.<br />So for example if the mean is 0.33 that would mean we need to replace all NAs<br />with 0 which is not very correct and changes the result.<br />So i will be using a flip coin model with probability vector set to return either<br />the floor(mean) or ceiling(mean) with corresponding probabilities</p>
+<p>I will use next strategy for filling NAs values steps:</p>
+<ul>
+<li>calculate the mean for a specific interval<br /></li>
+<li>calculate the sum of all NAs for a specific interval<br /></li>
+<li>build a binomial distribution and get a vector with length equal to missing NAs number for that interval<br /></li>
+<li>replace NAs with vector obtained from the binomial disrtibution</li>
+</ul>
 <p>Creating the function that will generate a vector of values with specified parameters</p>
 <pre class="r"><code>get.replace.values &lt;- function(mean, na.count) {
     #   setting seed to make results reproducible

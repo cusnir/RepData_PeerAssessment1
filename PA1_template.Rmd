@@ -84,24 +84,29 @@ Calculations show that **maximum number of steps on average** is *`r max.steps.v
 and the **interval** when it occurs is *`r max.steps.interval`*  
 
 ## Imputing missing values
-Calculate the total number of missing values in the dataset
+Calculate the total number of missing values in the dataset  
 ```{r}
-na <- sum(is.na(activity))
+na <-sum(is.na(activity))
+print(na)
 ```
 
+So there are *`r na`* missing values.
+
+To make an approach how to replace these NAs with some values we need to consider next thing.  
 The number of steps can be either 0 or 1 or any other integer value,  
 so we need to be able to replace NAs with integers and not mean values.  
 So for example if the mean is 0.33 that would mean we need to replace all NAs  
 with 0 which is not very correct and changes the result.  
-So i will be using a flip coin model with probability vector set to return 
-either the floor(mean) or ceiling(mean) with corresponding probabilities
+So i will be using a flip coin model with probability vector set to return either  
+the floor(mean) or ceiling(mean) with corresponding probabilities
 
-I will use next strategy for filling NAs values for steps:  
-* calculate the mean for a specific interval
-* calculate the sum of all NAs for a specific interval
-* build a binomial distribution and get a vector with length equal to missing NAs 
-number for that interval
-* replace NAs with vector obtained from the binomial disrtibution
+I will use next strategy for filling NAs values steps:
+
+- calculate the mean for a specific interval  
+- calculate the sum of all NAs for a specific interval  
+- build a binomial distribution and get a vector with length equal to missing NAs 
+number for that interval  
+- replace NAs with vector obtained from the binomial disrtibution  
 
 Creating the function that will generate a vector of values with specified parameters  
 
