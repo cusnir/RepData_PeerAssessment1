@@ -123,7 +123,7 @@ Creating the function that will generate a vector of values with specified param
 
 
 ```r
-get.replace.values <- function(mean, na.count) {
+GetReplaceValues <- function(mean, na.count) {
     #   setting seed to make results reproducible
     set.seed(121)
     first.value <- floor(mean)
@@ -147,11 +147,11 @@ Define a function to actually replace the NA values in a dataframe for a specifi
 function returns a dataframe with NAs replaced
 
 ```r
-replace.nas <- function(dframe, dframe.by.interval, period){
+ReplaceNas <- function(dframe, dframe.by.interval, period){
     mean.value <- filter(dframe.by.interval, interval == period)[["steps.per.interval"]]
     na.index <- which(dframe$interval == period & is.na(dframe$steps))
     na.count <- length(na.index)
-    values.vector <- get.replace.values(mean.value, na.count)
+    values.vector <- GetReplaceValues(mean.value, na.count)
     i <- 1
     for (index in na.index) {
         dframe[index, "steps"] <- values.vector[i]
@@ -167,7 +167,7 @@ intervals <- activity.by.interval[[1]]
 # create a copy of activity dataframe
 completed.activity <- activity
 for (inter in intervals) {
-    completed.activity <- replace.nas(completed.activity,
+    completed.activity <- ReplaceNas(completed.activity,
                                      activity.by.interval,
                                      as.character(inter))
 }
@@ -243,7 +243,7 @@ Create a new factor variable in the dataset with two levels – "weekday" and "w
 
 ```r
 # helper function to return either a "weekday" or a "weekend" based on input date
-get.day <- function(date) {
+GetDay <- function(date) {
     if (weekdays(as.Date(date)) == "Sunday" | weekdays(as.Date(date)) == "Saturday") {
         "weekend"
     } else {
@@ -251,7 +251,7 @@ get.day <- function(date) {
     }
 }    
 # create a new factor variable using sapply and helper function
-completed.activity["day"] <- factor(sapply(completed.activity$date, get.day))
+completed.activity["day"] <- factor(sapply(completed.activity$date, GetDay))
 ```
 
 Group the data by interval and day, and calculate the mean of steps  
