@@ -147,8 +147,7 @@ Define a function to actually replace the NA values in a dataframe for a specifi
 function returns a dataframe with NAs replaced
 
 ```r
-ReplaceNas <- function(dframe, dframe.by.interval, period){
-    mean.value <- filter(dframe.by.interval, interval == period)[["steps.per.interval"]]
+ReplaceNas <- function(dframe, mean.value, period){
     na.index <- which(dframe$interval == period & is.na(dframe$steps))
     na.count <- length(na.index)
     values.vector <- GetReplaceValues(mean.value, na.count)
@@ -167,8 +166,9 @@ intervals <- activity.by.interval[[1]]
 # create a copy of activity dataframe
 completed.activity <- activity
 for (inter in intervals) {
+    mean.value <- filter(activity.by.interval, interval == inter)[["steps.per.interval"]]
     completed.activity <- ReplaceNas(completed.activity,
-                                     activity.by.interval,
+                                     mean.value,
                                      as.character(inter))
 }
 ```

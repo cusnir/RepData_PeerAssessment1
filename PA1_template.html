@@ -173,8 +173,7 @@ print(na)</code></pre>
     return(values)
 }</code></pre>
 <p>Define a function to actually replace the NA values in a dataframe for a specific interval, function returns a dataframe with NAs replaced</p>
-<pre class="r"><code>ReplaceNas &lt;- function(dframe, dframe.by.interval, period){
-    mean.value &lt;- filter(dframe.by.interval, interval == period)[[&quot;steps.per.interval&quot;]]
+<pre class="r"><code>ReplaceNas &lt;- function(dframe, mean.value, period){
     na.index &lt;- which(dframe$interval == period &amp; is.na(dframe$steps))
     na.count &lt;- length(na.index)
     values.vector &lt;- GetReplaceValues(mean.value, na.count)
@@ -190,8 +189,9 @@ print(na)</code></pre>
 # create a copy of activity dataframe
 completed.activity &lt;- activity
 for (inter in intervals) {
+    mean.value &lt;- filter(activity.by.interval, interval == inter)[[&quot;steps.per.interval&quot;]]
     completed.activity &lt;- ReplaceNas(completed.activity,
-                                     activity.by.interval,
+                                     mean.value,
                                      as.character(inter))
 }</code></pre>
 <p>ensuring there are no more NAs</p>
