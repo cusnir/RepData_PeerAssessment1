@@ -102,11 +102,11 @@ the floor(mean) or ceiling(mean) with corresponding probabilities
 
 I will use next strategy for filling NAs values steps:
 
-- calculate the mean for a specific interval  
-- calculate the sum of all NAs for a specific interval  
-- build a binomial distribution and get a vector with length equal to missing NAs 
+- get the mean for a specific interval  
+- get the number of all NAs for a specific interval  
+- build a normal distribution and get a vector with length equal to missing NAs 
 number for that interval  
-- replace NAs with vector obtained from the binomial disrtibution  
+- replace all NAs with values from the vector obtained from the normal distribution  
 
 Creating the function that will generate a vector of values with specified parameters  
 

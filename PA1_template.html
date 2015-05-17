@@ -148,10 +148,10 @@ print(na)</code></pre>
 <p>To make an approach how to replace these NAs with some values we need to consider next thing.<br />The number of steps can be either 0 or 1 or any other integer value,<br />so we need to be able to replace NAs with integers and not mean values.<br />So for example if the mean is 0.33 that would mean we need to replace all NAs<br />with 0 which is not very correct and changes the result.<br />So i will be using a flip coin model with probability vector set to return either<br />the floor(mean) or ceiling(mean) with corresponding probabilities</p>
 <p>I will use next strategy for filling NAs values steps:</p>
 <ul>
-<li>calculate the mean for a specific interval<br /></li>
-<li>calculate the sum of all NAs for a specific interval<br /></li>
-<li>build a binomial distribution and get a vector with length equal to missing NAs number for that interval<br /></li>
-<li>replace NAs with vector obtained from the binomial disrtibution</li>
+<li>get the mean for a specific interval<br /></li>
+<li>get the number of all NAs for a specific interval<br /></li>
+<li>build a normal distribution and get a vector with length equal to missing NAs number for that interval<br /></li>
+<li>replace all NAs with values from the vector obtained from the normal distribution</li>
 </ul>
 <p>Creating the function that will generate a vector of values with specified parameters</p>
 <pre class="r"><code>GetReplaceValues &lt;- function(mean, na.count) {
